@@ -1,0 +1,7 @@
+Z:\Juancho\AxiomaX\FrutaFresca\FFSHOP-5\Nop3.2\nopcommerce\Plugins\Payments.PayPalStandard\Description.txt
+Z:\Juancho\AxiomaX\FrutaFresca\FFSHOP-5\Nop3.2\nopcommerce\Plugins\Payments.PayPalStandard\logo.jpg
+Z:\Juancho\AxiomaX\FrutaFresca\FFSHOP-5\Nop3.2\nopcommerce\Plugins\Payments.PayPalStandard\Nop.Plugin.Payments.PayPalStandard.dll
+Z:\Juancho\AxiomaX\FrutaFresca\FFSHOP-5\Nop3.2\nopcommerce\Plugins\Payments.PayPalStandard\Nop.Plugin.Payments.PayPalStandard.pdb
+Z:\Juancho\AxiomaX\FrutaFresca\nopCommerce3.20\Plugins\Nop.Plugin.Payments.PayPalStandard\obj\Debug\Nop.Plugin.Payments.PayPalStandard.csprojResolveAssemblyReference.cache
+Z:\Juancho\AxiomaX\FrutaFresca\nopCommerce3.20\Plugins\Nop.Plugin.Payments.PayPalStandard\obj\Debug\Nop.Plugin.Payments.PayPalStandard.dll
+Z:\Juancho\AxiomaX\FrutaFresca\nopCommerce3.20\Plugins\Nop.Plugin.Payments.PayPalStandard\obj\Debug\Nop.Plugin.Payments.PayPalStandard.pdb

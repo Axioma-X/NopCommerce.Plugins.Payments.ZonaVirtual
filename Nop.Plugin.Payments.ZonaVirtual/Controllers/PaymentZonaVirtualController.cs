@@ -70,6 +70,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual.Controllers
             model.RutaTienda = ZonaVirtualPaymentSettings.RutaTienda;
             model.ID_Clave = ZonaVirtualPaymentSettings.ID_Clave;
             model.ID_Tienda = ZonaVirtualPaymentSettings.ID_Tienda;
+            model.NombreTienda = ZonaVirtualPaymentSettings.NombreTienda;
             //model.BusinessEmail = ZonaVirtualPaymentSettings.BusinessEmail;
             model.PdtToken = ZonaVirtualPaymentSettings.PdtToken;
             model.PdtValidateOrderTotal = ZonaVirtualPaymentSettings.PdtValidateOrderTotal;
@@ -115,6 +116,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual.Controllers
             ZonaVirtualPaymentSettings.RutaTienda = model.RutaTienda;
             ZonaVirtualPaymentSettings.ID_Clave = model.ID_Clave;
             ZonaVirtualPaymentSettings.ID_Tienda = model.ID_Tienda;
+            ZonaVirtualPaymentSettings.NombreTienda = model.NombreTienda;
 
             //ZonaVirtualPaymentSettings.BusinessEmail = model.BusinessEmail;
             ZonaVirtualPaymentSettings.PdtToken = model.PdtToken;
@@ -134,6 +136,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual.Controllers
             //else if (storeScope > 0)
             //    _settingService.DeleteSetting(ZonaVirtualPaymentSettings, x => x.UseSandbox, storeScope);
             _settingService.SaveSetting(ZonaVirtualPaymentSettings, x => x.RutaTienda, storeScope, false);
+            _settingService.SaveSetting(ZonaVirtualPaymentSettings, x => x.NombreTienda, storeScope, false);
             _settingService.SaveSetting(ZonaVirtualPaymentSettings, x => x.ID_Clave, storeScope, false);
             _settingService.SaveSetting(ZonaVirtualPaymentSettings, x => x.ID_Tienda, storeScope, false);
 

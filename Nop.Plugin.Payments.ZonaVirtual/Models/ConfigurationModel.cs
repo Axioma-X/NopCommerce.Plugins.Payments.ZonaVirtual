@@ -5,6 +5,8 @@ namespace Nop.Plugin.Payments.ZonaVirtual.Models
 {
     public class ConfigurationModel : BaseNopModel
     {
+        [NopResourceDisplayName("Nombre Tienda")]
+        public string NombreTienda { get; set; }
         [NopResourceDisplayName("Ruta Tienda")]
         public string RutaTienda { get; set; }
          [NopResourceDisplayName("ID Tienda")]

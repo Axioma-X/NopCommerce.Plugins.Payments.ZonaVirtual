@@ -7,6 +7,8 @@ namespace Nop.Plugin.Payments.ZonaVirtual
         public string RutaTienda { get; set; }
         public int ID_Tienda { get; set; }
         public string ID_Clave { get; set; }
+        public string NombreTienda { get; set; }
+
        // public bool UseSandbox { get; set; }
         
         public string BusinessEmail { get; set; }

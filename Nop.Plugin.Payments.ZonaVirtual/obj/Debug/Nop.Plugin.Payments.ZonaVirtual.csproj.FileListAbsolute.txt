@@ -16,3 +16,7 @@ D:\Clientes\JLara\Ultimo\nopcommerce\Plugins\Payments.ZonaVirtual\Description.tx
 D:\Clientes\JLara\Ultimo\nopcommerce\Plugins\Payments.ZonaVirtual\logo.jpg
 D:\Clientes\JLara\Ultimo\nopcommerce\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.dll
 D:\Clientes\JLara\Ultimo\nopcommerce\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.pdb
+D:\Clientes\JLara\Estable\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Description.txt
+D:\Clientes\JLara\Estable\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\logo.jpg
+D:\Clientes\JLara\Estable\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.dll
+D:\Clientes\JLara\Estable\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.pdb

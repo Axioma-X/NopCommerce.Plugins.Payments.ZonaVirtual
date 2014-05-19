@@ -1,4 +1,4 @@
-Group: Payment methods
+﻿Group: Payment methods
 FriendlyName: Zona Virtual
 SystemName: Payments.ZonaVirtual
 Version: 1.18

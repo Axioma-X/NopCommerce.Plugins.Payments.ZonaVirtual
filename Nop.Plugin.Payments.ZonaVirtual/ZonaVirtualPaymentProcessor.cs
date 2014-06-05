@@ -92,11 +92,9 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             req.Method = "POST";
             req.ContentType = "application/x-www-form-urlencoded";
 
-            string formContent = string.Format("cmd=_notify-synch&at={0}&tx={1}", _ZonaVirtualPaymentSettings.PdtToken, tx);
-            req.ContentLength = formContent.Length;
+           
 
-            using (var sw = new StreamWriter(req.GetRequestStream(), Encoding.ASCII))
-                sw.Write(formContent);
+          
 
             response = null;
             using (var sr = new StreamReader(req.GetResponse().GetResponseStream()))
@@ -199,18 +197,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             string txtcampo3 = "";
 
             var builder = new StringBuilder();
-            //builder.Append(GetZonaVirtualUrl());
-            //WebPostRequest(GetZonaVirtualUrl());
-            string cmd = string.Empty;
-            if (_ZonaVirtualPaymentSettings.PassProductNamesAndTotals)
-            {
-                cmd = "_cart";
-            }
-            else
-            {
-                cmd = "_xclick";
-            }
-            //builder.AppendFormat("?cmd={0}&business={1}", cmd, HttpUtility.UrlEncode(_ZonaVirtualPaymentSettings.BusinessEmail));
+     
             if (_ZonaVirtualPaymentSettings.PassProductNamesAndTotals)
             {
               //  builder.AppendFormat("&upload=1");
@@ -224,10 +211,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
                     var unitPriceExclTax = item.UnitPriceExclTax;
                     var priceExclTax = item.PriceExclTax;
                     //round
-                    var unitPriceExclTaxRounded = Math.Round(unitPriceExclTax, 2);
-                  //  builder.AppendFormat("&item_name_" + x + "={0}", HttpUtility.UrlEncode(item.Product.Name));
-                  //  builder.AppendFormat("&amount_" + x + "={0}", unitPriceExclTaxRounded.ToString("0.00", CultureInfo.InvariantCulture));
-                  //  builder.AppendFormat("&quantity_" + x + "={0}", item.Quantity);
+                    var unitPriceExclTaxRounded = Math.Round(unitPriceExclTax, 2);              
                     x++;
                     cartTotal += priceExclTax;
                     
@@ -246,9 +230,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
                         if (ca != null)
                         {
                             var attName = ca.Name; //set the name
-                       //     builder.AppendFormat("&item_name_" + x + "={0}", HttpUtility.UrlEncode(attName)); //name
-                       //     builder.AppendFormat("&amount_" + x + "={0}", attPriceRounded.ToString("0.00", CultureInfo.InvariantCulture)); //amount
-                       //     builder.AppendFormat("&quantity_" + x + "={0}", 1); //quantity
+                   
                             x++;
                             cartTotal += attPrice;
                         }
@@ -261,10 +243,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
                 var orderShippingExclTax = postProcessPaymentRequest.Order.OrderShippingExclTax;
                 var orderShippingExclTaxRounded = Math.Round(orderShippingExclTax, 2);
                 if (orderShippingExclTax > decimal.Zero)
-                {
-                  //  builder.AppendFormat("&item_name_" + x + "={0}", "Shipping fee");
-                  //  builder.AppendFormat("&amount_" + x + "={0}", orderShippingExclTaxRounded.ToString("0.00", CultureInfo.InvariantCulture));
-                  //  builder.AppendFormat("&quantity_" + x + "={0}", 1);
+                {            
                     x++;
                     cartTotal += orderShippingExclTax;
                 }
@@ -273,10 +252,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
                 var paymentMethodAdditionalFeeExclTax = postProcessPaymentRequest.Order.PaymentMethodAdditionalFeeExclTax;
                 var paymentMethodAdditionalFeeExclTaxRounded = Math.Round(paymentMethodAdditionalFeeExclTax, 2);
                 if (paymentMethodAdditionalFeeExclTax > decimal.Zero)
-                {
-                  //  builder.AppendFormat("&item_name_" + x + "={0}", "Payment method fee");
-                  //  builder.AppendFormat("&amount_" + x + "={0}", paymentMethodAdditionalFeeExclTaxRounded.ToString("0.00", CultureInfo.InvariantCulture));
-                  //  builder.AppendFormat("&quantity_" + x + "={0}", 1);
+                {               
                     x++;
                     cartTotal += paymentMethodAdditionalFeeExclTax;
                 }
@@ -286,13 +262,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
                 var orderTaxRounded = Math.Round(orderTax, 2);
                 if (orderTax > decimal.Zero)
                 {
-                    //builder.AppendFormat("&tax_1={0}", orderTax.ToString("0.00", CultureInfo.InvariantCulture));
-
-                    //add tax as item
-                 //   builder.AppendFormat("&item_name_" + x + "={0}", HttpUtility.UrlEncode("Sales Tax")); //name
-                 //   builder.AppendFormat("&amount_" + x + "={0}", orderTaxRounded.ToString("0.00", CultureInfo.InvariantCulture)); //amount
-                 //   builder.AppendFormat("&quantity_" + x + "={0}", 1); //quantity
-
+               
                     cartTotal += orderTax;
                     x++;
                 }
@@ -304,42 +274,25 @@ namespace Nop.Plugin.Payments.ZonaVirtual
                      */
                     decimal discountTotal = cartTotal - postProcessPaymentRequest.Order.OrderTotal;
                     discountTotal = Math.Round(discountTotal, 2);
-                    //gift card or rewared point amount applied to cart in nopCommerce - shows in Paypal as "discount"
-                  //  builder.AppendFormat("&discount_amount_cart={0}", discountTotal.ToString("0.00", CultureInfo.InvariantCulture));
-                }
-                //Add("total_con_iva", cartTotal.ToString());
-                //builder.AppendFormat("&total_con_iva={0}", cartTotal);
+                 }
                 total_con_iva = cartTotal;
                 valor_iva = postProcessPaymentRequest.Order.OrderTax;
             }
             else
             {
-                //pass order total
-                //builder.AppendFormat("&item_name=Order Number {0}", postProcessPaymentRequest.Order.Id);
+                //pass order total           
                 var orderTotal = Math.Round(postProcessPaymentRequest.Order.OrderTotal, 2);
-                //builder.AppendFormat("&total_con_iva={0}", orderTotal.ToString("0.00", CultureInfo.InvariantCulture));
-               
+                          
                 total_con_iva = postProcessPaymentRequest.Order.OrderTotal;
                 valor_iva = postProcessPaymentRequest.Order.OrderTax;
             }
 
-            //builder.AppendFormat("&custom={0}", postProcessPaymentRequest.Order.OrderGuid);
-            //builder.AppendFormat("&charset={0}", "utf-8");
-            //builder.Append(string.Format("&no_note=1&currency_code={0}", HttpUtility.UrlEncode(_currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId).CurrencyCode)));
-            
-            //builder.AppendFormat("&Id_pago={0}", postProcessPaymentRequest.Order.Id);
-            //Add("Id_pago", postProcessPaymentRequest.Order.Id.ToString());
+           
             Id_pago = postProcessPaymentRequest.Order.Id.ToString();
-            //builder.AppendFormat("&rm=2", new object[0]);
-            //if (postProcessPaymentRequest.Order.ShippingStatus != ShippingStatus.ShippingNotRequired)
-            //    builder.AppendFormat("&no_shipping=2", new object[0]);
-            //else
-            //    builder.AppendFormat("&no_shipping=1", new object[0]);
-
+           
             string returnUrl = _webHelper.GetStoreLocation(false) + "Plugins/PaymentZonaVirtual/PDTHandler";//?idOrder="+postProcessPaymentRequest.Order.Id;
             string cancelReturnUrl = _webHelper.GetStoreLocation(false) + "Plugins/PaymentZonaVirtual/CancelOrder";
-            //builder.AppendFormat("&return={0}&cancel_return={1}", HttpUtility.UrlEncode(returnUrl), HttpUtility.UrlEncode(cancelReturnUrl));
-            
+           
             //Instant Payment Notification (server to server message)
             if (_ZonaVirtualPaymentSettings.EnableIpn)
             {
@@ -357,110 +310,14 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             apellido_cliente = postProcessPaymentRequest.Order.BillingAddress.LastName;
             telefono_cliente = postProcessPaymentRequest.Order.BillingAddress.PhoneNumber;
 
-            //address
-           // builder.AppendFormat("&address_override=1");
-           // builder.AppendFormat("&nombre_cliente={0}", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.FirstName));
-           // Add("nombre_cliente", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.FirstName));
-           // builder.AppendFormat("&apellido_cliente={0}", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.LastName));
-           // Add("apellido_cliente", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.LastName));
-            //builder.AppendFormat("&address1={0}", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.Address1));
-            //builder.AppendFormat("&address2={0}", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.Address2));
-            //builder.AppendFormat("&city={0}", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.City));
-            //if (!String.IsNullOrEmpty(postProcessPaymentRequest.Order.BillingAddress.PhoneNumber))
-            //{
-            //    //strip out all non-digit characters from phone number;
-            //    string billingPhoneNumber = System.Text.RegularExpressions.Regex.Replace(postProcessPaymentRequest.Order.BillingAddress.PhoneNumber, @"\D", string.Empty);
-            //    if (billingPhoneNumber.Length >= 10)
-            //    {
-            //        builder.AppendFormat("&night_phone_a={0}", HttpUtility.UrlEncode(billingPhoneNumber.Substring(0, 3)));
-            //        builder.AppendFormat("&night_phone_b={0}", HttpUtility.UrlEncode(billingPhoneNumber.Substring(3, 3)));
-            //        builder.AppendFormat("&night_phone_c={0}", HttpUtility.UrlEncode(billingPhoneNumber.Substring(6, 4)));
-            //    }
-            //}
-            //if (postProcessPaymentRequest.Order.BillingAddress.StateProvince != null)
-            //    builder.AppendFormat("&state={0}", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.StateProvince.Abbreviation));
-            //else
-            //    builder.AppendFormat("&state={0}", "");
-            //if (postProcessPaymentRequest.Order.BillingAddress.Country != null)
-            //    builder.AppendFormat("&country={0}", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.Country.TwoLetterIsoCode));
-            //else
-            //    builder.AppendFormat("&country={0}", "");
-            //builder.AppendFormat("&zip={0}", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.ZipPostalCode));
-           // builder.AppendFormat("&Txtemail={0}", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.Email));
-           // Add("Txtemail", HttpUtility.UrlEncode(postProcessPaymentRequest.Order.BillingAddress.Email));
-            //
-
-            //
-           // HttpWebRequest HttpWRequest = (HttpWebRequest)WebRequest.Create(GetZonaVirtualUrl());
-            //Importante poner los credenciales sino no podremos realizar bien el envio
-            //Si nuestro servidor tiene credenciales tendremos que añadirle password y 
-            //contraseña. Para eelo utilizamos el siguiente codigo:
-            //
-            //NetworkCredential myCred=new NetworkCredential("usuario", "password");
-            //CredentialCache MyCrendentialCache = new CredentialCache();
-            //MyCrendentialCache.Add(URL, "Basic", myCred);
-            //HttpWRequest.Credentials = MyCrendentialCache;
-
- //           HttpWRequest.Credentials = CredentialCache.DefaultCredentials;
-  //          HttpWRequest.UserAgent = "Zona Virtual";
-         //   HttpWRequest.KeepAlive = true;
-         //   HttpWRequest.Headers.Set("Pragma", "no-cache");
-            //Le hemos puesto un timeout de 1 seg
-         //   HttpWRequest.Timeout = 1000;
-            // El metodo que usaremos es el POST
-          //  HttpWRequest.Method = "POST";
-            // add the content type so we can handle form data
-          //  HttpWRequest.ContentType = "application/x-www-form-urlencoded";
-            //Pasamos a bytes el mensaje.Recordar que tenemos que poner antes el nombre del id 
-            //que apuntara al mensaje enviado. En este caso hemos escogido param1.
-            //byte[] PostData = System.Text.Encoding.ASCII.GetBytes(builder.ToString());
-            //HttpWRequest.ContentLength = PostData.Length;
-            //Stream tempStream = HttpWRequest.GetRequestStream();
-            //Escribimos los datos
-            //tempStream.Write(PostData, 0, PostData.Length);
-            //tempStream.Close();
-            //_httpContext.Response.Redirect(returnUrl);
-
-            
-            // Add("keyword", "void");
-            // Add("data", "hello&+-[]");
-             
-            ///Console.WriteLine(myPost.GetResponse());
-            //_httpContext.Request.Form["test"] = "tes";
-            //_httpContext.Response.
-             //_httpContext.Response.Redirect(GetResponse());
-            
-//Debe ingresar información en el campo: Id Pago
-//Debe ingresar información en el campo: Identificación cliente
-//Debe ingresar información en el campo: Tipo Identificación
-//Debe ingresar información en el campo: Total a pagar
-//Debe ingresar información en el campo: Concepto
-//Debe ingresar información en el campo: Campo1
-//Debe ingresar información en el campo: Campo2
-            //Debe ingresar información en el campo: Campo3 
-            
-                System.Web.HttpContext.Current.Response.Clear();
-
+          
+             // Clear Response Method
+             System.Web.HttpContext.Current.Response.Clear();
+             // Struct the main page to send Zona Virtual platform
              System.Web.HttpContext.Current.Response.Write("<html><head>");
-
              System.Web.HttpContext.Current.Response.Write(string.Format("</head><body onload=\"document.{0}.submit()\">", "FormName"));
              System.Web.HttpContext.Current.Response.Write(string.Format("<form name=\"{0}\" method=\"{1}\" action=\"{2}\" >", "FormName", "POST",GetZonaVirtualUrl() + "?estado_pago=enviar_datos"));
-             //for (int i = 0; i < Inputs.Keys.Count; i++)
-            // {
-            //<input class="campo_text" type="TEXT" value="" maxlength="30" size="15" name="id_pago">
-             //tipo_id_cliente
-             //id_cliente
-             //total_con_iva
-             //valor_iva
-             //descrip_pago
-             //nombre_cliente
-             //apellido_cliente
-             //txtemail
-             //telefono_cliente
-             //txtcampo1
-             //txtcampo2
-             //txtcampo3
-             txtcampo1 = " - "; // Pendiente por definir
+             txtcampo1 = " - "; // Not defined by customer
              txtcampo2 = " - ";
              txtcampo3 = " - ";
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "Id_pago", Id_pago));
@@ -476,43 +333,13 @@ namespace Nop.Plugin.Payments.ZonaVirtual
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "txtcampo1", txtcampo1 ));
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "txtcampo2", txtcampo2 ));
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "txtcampo3", txtcampo3 ));
-            // }
+            
              System.Web.HttpContext.Current.Response.Write("</form>");
              System.Web.HttpContext.Current.Response.Write("</body></html>");
-
+             // Close the struct and will be sended automatically 
              System.Web.HttpContext.Current.Response.End();
         }
-        public void WebPostRequest(string url)
-		{
-			theRequest = WebRequest.Create(url);
-			theRequest.Method = "POST";
-			theQueryData = new ArrayList();
-		}
-
-		public void Add(string key, string value)
-		{
-			theQueryData.Add(String.Format("{0}={1}",key,HttpUtility.UrlEncode(value)));
-		}
-
-		public string GetResponse()
-		{
-			// Set the encoding type
-			theRequest.ContentType="application/x-www-form-urlencoded";
-
-			// Build a string containing all the parameters
-			string Parameters = String.Join("&",(String[]) theQueryData.ToArray(typeof(string)));
-			theRequest.ContentLength = Parameters.Length;
-
-			// We write the parameters into the request
-			StreamWriter sw = new StreamWriter(theRequest.GetRequestStream());
-  			sw.Write(Parameters);
-  			sw.Close();
-
-			// Execute the query
-			theResponse =  (HttpWebResponse)theRequest.GetResponse();
-  			StreamReader sr = new StreamReader(theResponse.GetResponseStream());
-   			return sr.ReadToEnd();
-		}
+       
 
         /// <summary>
         /// Gets additional handling fee

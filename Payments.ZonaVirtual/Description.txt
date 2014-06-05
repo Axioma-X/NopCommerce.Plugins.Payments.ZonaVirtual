@@ -1,8 +1,8 @@
-﻿Group: Payment methods
+Group: Payment methods
 FriendlyName: Zona Virtual
 SystemName: Payments.ZonaVirtual
 Version: 1.18
-SupportedVersions: 3.20
+SupportedVersions: 3.30
 Author: nopCommerce team
 DisplayOrder: 1
 FileName: Nop.Plugin.Payments.ZonaVirtual.dll

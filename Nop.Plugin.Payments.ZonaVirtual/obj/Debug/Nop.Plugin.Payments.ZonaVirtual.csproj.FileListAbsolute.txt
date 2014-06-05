@@ -20,3 +20,4 @@ D:\Clientes\JLara\Estable\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Desc
 D:\Clientes\JLara\Estable\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\logo.jpg
 D:\Clientes\JLara\Estable\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.dll
 D:\Clientes\JLara\Estable\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.pdb
+Z:\Juancho\AxiomaX\FrutaFresca\nopComerce.3.30.SourceCode\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Debug\Nop.Plugin.Payments.ZonaVirtual.csprojResolveAssemblyReference.cache

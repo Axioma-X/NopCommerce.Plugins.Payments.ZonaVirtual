@@ -4,12 +4,13 @@ namespace Nop.Plugin.Payments.ZonaVirtual
 {
     public class ZonaVirtualPaymentSettings : ISettings
     {
+        // Info to connect Zona Virtual 
         public string RutaTienda { get; set; }
         public int ID_Tienda { get; set; }
         public string ID_Clave { get; set; }
         public string NombreTienda { get; set; }
 
-       // public bool UseSandbox { get; set; }
+   
         
         public string BusinessEmail { get; set; }
         public string PdtToken { get; set; }
@@ -27,7 +28,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
         public string IpnUrl { get; set; }
         /// <summary>
         /// Enable if a customer should be redirected to the order details page
-        /// when he clicks "return to store" link on PayPal site
+        /// when he clicks "return to store" link on ZonaVirtual site
         /// WITHOUT completing a payment
         /// </summary>
         public bool ReturnFromPayPalWithoutPaymentRedirectsToOrderDetailsPage { get; set; }

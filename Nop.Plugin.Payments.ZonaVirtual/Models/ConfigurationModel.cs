@@ -5,13 +5,13 @@ namespace Nop.Plugin.Payments.ZonaVirtual.Models
 {
     public class ConfigurationModel : BaseNopModel
     {
-        [NopResourceDisplayName("Nombre Tienda")]
+        [NopResourceDisplayName("Plugins.Payments.ZonaVirtual.Fields.StoreName")]
         public string NombreTienda { get; set; }
-        [NopResourceDisplayName("Ruta Tienda")]
+        [NopResourceDisplayName("Plugins.Payments.ZonaVirtual.Fields.URL")]
         public string RutaTienda { get; set; }
-         [NopResourceDisplayName("ID Tienda")]
+         [NopResourceDisplayName("Plugins.Payments.ZonaVirtual.Fields.IDStore")]
         public int ID_Tienda { get; set; }
-         [NopResourceDisplayName("ID Clave")]
+         [NopResourceDisplayName("Plugins.Payments.ZonaVirtual.Fields.IDKey")]
         public string ID_Clave { get; set; }
        
     }

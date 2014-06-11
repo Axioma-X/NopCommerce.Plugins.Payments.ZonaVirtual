@@ -1,8 +1,8 @@
 ﻿Group: Payment methods
-FriendlyName: Zona Virtual
+FriendlyName: Zona Virtual Colombia
 SystemName: Payments.ZonaVirtual
-Version: 1.18
+Version: 1.00
 SupportedVersions: 3.30
-Author: nopCommerce team
+Author: Axioma X
 DisplayOrder: 1
 FileName: Nop.Plugin.Payments.ZonaVirtual.dll

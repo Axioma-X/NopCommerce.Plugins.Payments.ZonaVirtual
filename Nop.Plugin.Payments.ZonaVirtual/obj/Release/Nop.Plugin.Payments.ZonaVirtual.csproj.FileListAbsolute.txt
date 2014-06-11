@@ -1,0 +1,8 @@
+Z:\Juancho\AxiomaX\FrutaFresca\nopComerce.3.30.SourceCode\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Release\Nop.Plugin.Payments.ZonaVirtual.csprojResolveAssemblyReference.cache
+D:\Clientes\Juan Lara\Fruta Fresca\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Release\Nop.Plugin.Payments.ZonaVirtual.csprojResolveAssemblyReference.cache
+D:\Clientes\Juan Lara\Fruta Fresca\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Description.txt
+D:\Clientes\Juan Lara\Fruta Fresca\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\logo.jpg
+D:\Clientes\Juan Lara\Fruta Fresca\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.dll
+D:\Clientes\Juan Lara\Fruta Fresca\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.pdb
+D:\Clientes\Juan Lara\Fruta Fresca\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Release\Nop.Plugin.Payments.ZonaVirtual.dll
+D:\Clientes\Juan Lara\Fruta Fresca\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Release\Nop.Plugin.Payments.ZonaVirtual.pdb

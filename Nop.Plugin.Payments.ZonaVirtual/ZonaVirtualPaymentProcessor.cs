@@ -476,29 +476,14 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             _settingService.SaveSetting(settings);
 
             //locales
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.RedirectionTip", "You will be redirected to PayPal site to complete the order.");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.UseSandbox", "Use Sandbox");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.UseSandbox.Hint", "Check to enable Sandbox (testing environment).");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.BusinessEmail", "Business Email");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.BusinessEmail.Hint", "Specify your PayPal business email.");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTToken", "PDT Identity Token");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTToken.Hint", "Specify PDT identity token");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTValidateOrderTotal", "PDT. Validate order total");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTValidateOrderTotal.Hint", "Check if PDT handler should validate order totals.");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFee", "Additional fee");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFee.Hint", "Enter additional fee to charge your customers.");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFeePercentage", "Additional fee. Use percentage");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFeePercentage.Hint", "Determines whether to apply a percentage additional fee to the order total. If not enabled, a fixed value is used.");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PassProductNamesAndTotals", "Pass product names and order totals to PayPal");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PassProductNamesAndTotals.Hint", "Check if product names and order totals should be passed to PayPal.");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.EnableIpn", "Enable IPN (Instant Payment Notification)");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.EnableIpn.Hint", "Check if IPN is enabled.");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.EnableIpn.Hint2", "Leave blank to use the default IPN handler URL.");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IpnUrl", "IPN Handler");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IpnUrl.Hint", "Specify IPN Handler.");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ReturnFromPayPalWithoutPaymentRedirectsToOrderDetailsPage", "Return to order details page");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ReturnFromPayPalWithoutPaymentRedirectsToOrderDetailsPage.Hint", "Enable if a customer should be redirected to the order details page when he clicks \"return to store\" link on PayPal site WITHOUT completing a payment");
-
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.StoreName", "Store Name");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.StoreName.Hint", "The name of the Store for Zona Virtual");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.URL", "URL Payment Button");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.URL.Hint", "URL provided for Zona Virtual");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDStore", "Unique ID");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDStore.Hint", "Unique ID");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey", "WebService Password");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey.Hint", "Password provided for Zona Virtual");
             base.Install();
         }
         
@@ -508,30 +493,15 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             _settingService.DeleteSetting<ZonaVirtualPaymentSettings>();
 
             //locales
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.RedirectionTip");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.UseSandbox");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.UseSandbox.Hint");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.BusinessEmail");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.BusinessEmail.Hint");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTToken");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTToken.Hint");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTValidateOrderTotal");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTValidateOrderTotal.Hint");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFee");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFee.Hint");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFeePercentage");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFeePercentage.Hint");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PassProductNamesAndTotals");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PassProductNamesAndTotals.Hint");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.EnableIpn");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.EnableIpn.Hint");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.EnableIpn.Hint2");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IpnUrl");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IpnUrl.Hint");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ReturnFromPayPalWithoutPaymentRedirectsToOrderDetailsPage");
-            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ReturnFromPayPalWithoutPaymentRedirectsToOrderDetailsPage.Hint");
-            
-            base.Uninstall();
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.StoreName");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.StoreName.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.URL");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.URL.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDStore");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDStore.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey.Hint");
+              base.Uninstall();
         }
 
         #endregion

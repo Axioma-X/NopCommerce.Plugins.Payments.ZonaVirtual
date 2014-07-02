@@ -323,8 +323,8 @@ namespace Nop.Plugin.Payments.ZonaVirtual
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "Id_pago", Id_pago));
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "tipo_id_cliente",tipo_id_cliente ));
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "Id_cliente", Id_cliente ));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "total_con_iva", total_con_iva));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "valor_iva", valor_iva));
+             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "total_con_iva", (int)total_con_iva));
+             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "valor_iva", (int)valor_iva));
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "descrip_pago", descrip_pago ));
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "nombre_cliente", nombre_cliente ));
              System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "apellido_cliente", apellido_cliente ));
@@ -484,6 +484,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDStore.Hint", "Unique ID");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey", "WebService Password");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey.Hint", "Password provided for Zona Virtual");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Front.Message", "Zona Virtual Payment Method redirect you buy to www.zonavirual.com to complete the process");
             base.Install();
         }
         
@@ -501,6 +502,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDStore.Hint");
             this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey");
             this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Front.Message");
               base.Uninstall();
         }
 

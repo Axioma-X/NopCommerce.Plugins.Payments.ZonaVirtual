@@ -2,7 +2,6 @@
     Layout = "";
 }
 @model Nop.Plugin.Payments.ZonaVirtual.Models.ConfigurationModel
-@using Nop.Plugin.Payments.ZonaVirtual.Models;
 @using Nop.Web.Framework;
 @Html.Action("StoreScopeConfiguration", "Setting", new { area = "Admin" })
 
@@ -23,7 +22,7 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.NombreTienda)
                 @Html.ValidationMessageFor(model => model.NombreTienda)
-               
+
             </td>
         </tr>
 
@@ -34,7 +33,7 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.RutaTienda)
                 @Html.ValidationMessageFor(model => model.RutaTienda)
-              
+
             </td>
         </tr>
 
@@ -45,7 +44,7 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.ID_Tienda)
                 @Html.ValidationMessageFor(model => model.ID_Tienda)
-              
+
             </td>
         </tr>
 
@@ -56,10 +55,23 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.ID_Clave)
                 @Html.ValidationMessageFor(model => model.ID_Clave)
-               
+
             </td>
         </tr>
-     
+
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.CodigoServicio):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.CodigoServicio)
+                @Html.ValidationMessageFor(model => model.CodigoServicio)
+
+            </td>
+        </tr>
+
+      
+
         <tr>
             <td colspan="2" width="100%">
                 <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
@@ -68,3 +80,4 @@
     </table>
 
 }
+

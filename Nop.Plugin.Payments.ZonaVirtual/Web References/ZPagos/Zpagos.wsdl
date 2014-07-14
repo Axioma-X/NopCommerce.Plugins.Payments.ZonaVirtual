@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.zonapagos.com" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.zonapagos.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.zonapagos.com">
+      <s:element name="inicio_pagoV2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id_tienda" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="clave" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="total_con_iva" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="valor_iva" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_pago" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descripcion_pago" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipo_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nombre_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apellido_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="telefono_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info_opcional1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info_opcional2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info_opcional3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="codigo_servicio_principal" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_codigos_servicio_multicredito" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_nit_codigos_servicio_multicredito" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_valores_con_iva" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_valores_iva" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="1" maxOccurs="1" name="total_codigos_servicio" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDouble">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="double" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="inicio_pagoV2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inicio_pagoV2Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="inicio_pagoV3">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id_tienda" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="clave" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="total_con_iva" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="valor_iva" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_pago" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descripcion_pago" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipo_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nombre_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apellido_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="telefono_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info_opcional1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info_opcional2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info_opcional3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="codigo_servicio_principal" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_codigos_servicio_multicredito" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_nit_codigos_servicio_multicredito" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_valores_con_iva" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_valores_iva" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="1" maxOccurs="1" name="total_codigos_servicio" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="archivo_adjunto_nombre_original" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="archivo_adjunto_nombre_guardado" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_info_opcional" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="inicio_pagoV3Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inicio_pagoV3Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="inicio_pagoV4">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id_tienda" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="clave" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="total_con_iva" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="valor_iva" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_pago" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descripcion_pago" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipo_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nombre_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apellido_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="telefono_cliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info_opcional1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info_opcional2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info_opcional3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="codigo_servicio_principal" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_codigos_servicio_multicredito" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_nit_codigos_servicio_multicredito" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_valores_con_iva" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_valores_iva" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="1" maxOccurs="1" name="total_codigos_servicio" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_info_opcional_codigo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_info_opcional_valor" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_respuesta" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="inicio_pagoV4Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inicio_pagoV4Result" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lista_respuesta" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="inicio_pagoV2SoapIn">
+    <wsdl:part name="parameters" element="tns:inicio_pagoV2" />
+  </wsdl:message>
+  <wsdl:message name="inicio_pagoV2SoapOut">
+    <wsdl:part name="parameters" element="tns:inicio_pagoV2Response" />
+  </wsdl:message>
+  <wsdl:message name="inicio_pagoV3SoapIn">
+    <wsdl:part name="parameters" element="tns:inicio_pagoV3" />
+  </wsdl:message>
+  <wsdl:message name="inicio_pagoV3SoapOut">
+    <wsdl:part name="parameters" element="tns:inicio_pagoV3Response" />
+  </wsdl:message>
+  <wsdl:message name="inicio_pagoV4SoapIn">
+    <wsdl:part name="parameters" element="tns:inicio_pagoV4" />
+  </wsdl:message>
+  <wsdl:message name="inicio_pagoV4SoapOut">
+    <wsdl:part name="parameters" element="tns:inicio_pagoV4Response" />
+  </wsdl:message>
+  <wsdl:portType name="ZPagosSoap">
+    <wsdl:operation name="inicio_pagoV2">
+      <wsdl:input message="tns:inicio_pagoV2SoapIn" />
+      <wsdl:output message="tns:inicio_pagoV2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="inicio_pagoV3">
+      <wsdl:input message="tns:inicio_pagoV3SoapIn" />
+      <wsdl:output message="tns:inicio_pagoV3SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="inicio_pagoV4">
+      <wsdl:input message="tns:inicio_pagoV4SoapIn" />
+      <wsdl:output message="tns:inicio_pagoV4SoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ZPagosSoap" type="tns:ZPagosSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="inicio_pagoV2">
+      <soap:operation soapAction="http://www.zonapagos.com/inicio_pagoV2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inicio_pagoV3">
+      <soap:operation soapAction="http://www.zonapagos.com/inicio_pagoV3" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inicio_pagoV4">
+      <soap:operation soapAction="http://www.zonapagos.com/inicio_pagoV4" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ZPagosSoap12" type="tns:ZPagosSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="inicio_pagoV2">
+      <soap12:operation soapAction="http://www.zonapagos.com/inicio_pagoV2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inicio_pagoV3">
+      <soap12:operation soapAction="http://www.zonapagos.com/inicio_pagoV3" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inicio_pagoV4">
+      <soap12:operation soapAction="http://www.zonapagos.com/inicio_pagoV4" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ZPagos">
+    <wsdl:port name="ZPagosSoap" binding="tns:ZPagosSoap">
+      <soap:address location="https://www.zonapagos.com/ws_inicio_pagov2/Zpagos.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ZPagosSoap12" binding="tns:ZPagosSoap12">
+      <soap12:address location="https://www.zonapagos.com/ws_inicio_pagov2/Zpagos.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

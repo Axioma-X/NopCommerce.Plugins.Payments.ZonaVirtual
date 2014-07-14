@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -80,6 +81,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PaypalHelper.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\ZPagosDemo\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\ZPagosVerificarDemo\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\ZPagosVerificar\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\ZPagos\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="ZonaVirtualHelper.cs" />
     <Compile Include="ZonaVirtualPaymentProcessor.cs" />
     <Compile Include="ZonaVirtualPaymentSettings.cs" />
@@ -108,8 +134,44 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\PaymentZonaVirtual\Configure.cshtml" />
     <EmbeddedResource Include="Views\PaymentZonaVirtual\PaymentInfo.cshtml" />
+    <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Web References\Service.wsdl" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ZPagosDemo\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ZPagosDemo\Zpagos.wsdl" />
+    <None Include="Web References\ZPagosVerificarDemo\pagos_v3.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ZPagosVerificarDemo\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ZPagosVerificarDemo\Respuesta.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ZPagosVerificarDemo\Service.wsdl" />
+    <None Include="Web References\ZPagosVerificar\pagos_v3.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ZPagosVerificar\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ZPagosVerificar\Respuesta.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ZPagosVerificar\Service.wsdl" />
+    <None Include="Web References\ZPagos\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ZPagos\Zpagos.wsdl" />
     <None Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +182,62 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Notes.txt" />
+    <None Include="Web References\ZPagosVerificarDemo\Service.disco" />
+    <None Include="Web References\ZPagosDemo\Zpagos.disco" />
+    <None Include="Web References\ZPagos\Zpagos.disco" />
+    <None Include="Web References\ZPagosVerificar\Service.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="https://www.zonapagos.com/ws_inicio_pagov2/Zpagos.asmx%3fop=inicio_pagoV2">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ZPagos\</RelPath>
+      <UpdateFromURL>https://www.zonapagos.com/ws_inicio_pagov2/Zpagos.asmx%3fop=inicio_pagoV2</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Nop_Plugin_Payments_ZonaVirtual_ZPagos_ZPagos</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://www.zonapagos.com/ws_verificar_pagos/Service.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ZPagosVerificar\</RelPath>
+      <UpdateFromURL>https://www.zonapagos.com/ws_verificar_pagos/Service.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Nop_Plugin_Payments_ZonaVirtual_ZPagosVerificar_Service</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://www.zonapagosdemo.com/ws_inicio_pagov2/Zpagos.asmx%3fop=inicio_pagoV2">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ZPagosDemo\</RelPath>
+      <UpdateFromURL>https://www.zonapagosdemo.com/ws_inicio_pagov2/Zpagos.asmx%3fop=inicio_pagoV2</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Nop_Plugin_Payments_ZonaVirtual_ZPagosDemo_ZPagos</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://www.zonapagosdemo.com/ws_verificar_pagos/Service.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ZPagosVerificarDemo\</RelPath>
+      <UpdateFromURL>https://www.zonapagosdemo.com/ws_verificar_pagos/Service.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Nop_Plugin_Payments_ZonaVirtual_ZPagosVerificarDemo_Service</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

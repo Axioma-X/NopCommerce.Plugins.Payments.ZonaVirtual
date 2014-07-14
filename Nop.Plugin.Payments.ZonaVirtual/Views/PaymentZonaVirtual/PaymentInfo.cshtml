@@ -5,8 +5,62 @@
 
 <table width="100%" cellpadding="0" cellspacing="0">
     <tr>
+
         <td>
             @T("Plugins.Payments.ZonaVirtual.Front.Message")
+
         </td>
     </tr>
 </table>
+<div id="dialogZonaVirtual" style="display:none; float: right;">
+
+    <iframe id="iframeZonaVirtual" name="iframeZonaVirtual" src="@HttpContext.Current.Session["URL"]"></iframe>
+
+</div>
+
+<script>
+    $("document").ready(function () {
+        // Open dialog with modal
+        $("#iframeZonaVirtual").css("width", $(window).width() - 120);
+        $("#iframeZonaVirtual").css("height", $(window).height() - 150);
+        $("#iframeZonaVirtual").css("margin", "auto");
+        $("#dialogZonaVirtual").dialog({
+            title: '@T("Plugins.Payments.ZonaVirtual.Front.TitleDialog")',
+            autoOpen: false,
+            resizable: false,
+            height: $(window).height() - 20,
+            width: $(window).width() - 100,
+            show: { effect: 'drop', direction: "up" },
+            position: { my: "center top", at: "center top", of: window },
+            modal: true,
+            draggable: false,
+
+            open: function () {
+
+                //$(this).load(url);
+            },
+            close: function (event, ui) {
+                $(this).dialog('close');
+            }
+        });
+        $("#dialogZonaVirtual").dialog('open');
+
+
+
+    });
+
+</script>
+
+<style>
+    .ui-widget-content {
+        border: 1px solid #aaa;
+        background: #fff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
+        color: #222;
+    }
+
+    .ui-widget-overlay {
+        background: #aaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x !important;
+        opacity: .3;
+        filter: Alpha(Opacity=30);
+    }
+</style>

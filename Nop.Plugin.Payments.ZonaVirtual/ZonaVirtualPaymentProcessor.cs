@@ -92,9 +92,11 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             req.Method = "POST";
             req.ContentType = "application/x-www-form-urlencoded";
 
-           
+            string formContent = string.Format("cmd=_notify-synch&at={0}&tx={1}", _ZonaVirtualPaymentSettings.PdtToken, tx);
+            req.ContentLength = formContent.Length;
 
-          
+            using (var sw = new StreamWriter(req.GetRequestStream(), Encoding.ASCII))
+                sw.Write(formContent);
 
             response = null;
             using (var sr = new StreamReader(req.GetResponse().GetResponseStream()))
@@ -182,164 +184,153 @@ namespace Nop.Plugin.Payments.ZonaVirtual
         public void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
         {
             // Datos necesarios para Zona Virtual
-            decimal total_con_iva = 0;
-            decimal valor_iva = 0;
-            string Id_pago = "";
-            string descrip_pago = "";
-            string Txtemail = "";
-            string Id_cliente = "";
-            short tipo_id_cliente = 0;
-            string nombre_cliente = "";
-            string apellido_cliente = "";
-            string telefono_cliente = "";
-            string txtcampo1 = "";
-            string txtcampo2 = "";
-            string txtcampo3 = "";
 
-            var builder = new StringBuilder();
-     
-            if (_ZonaVirtualPaymentSettings.PassProductNamesAndTotals)
+            string Id_pago = HttpContext.Current.Session["order_id_temp"].ToString();
+
+            ZPagosVerificar.Service Verificar = new ZPagosVerificar.Service();
+            var VerificarDemo = new ZPagosVerificarDemo.Service();
+
+            int error = 0;
+            string errorStr = "";
+            int res = -1;
+            if (_ZonaVirtualPaymentSettings.RutaTienda.IndexOf("demo") > 0)
             {
-              //  builder.AppendFormat("&upload=1");
-
-                //get the items in the cart
-                decimal cartTotal = decimal.Zero;
-                var cartItems = postProcessPaymentRequest.Order.OrderItems;
-                int x = 1;
-                foreach (var item in cartItems)
+                ZPagosVerificarDemo.pagos_v3[] respuesta = new ZPagosVerificarDemo.pagos_v3[1];
+                res = VerificarDemo.verificar_pago_v3(Id_pago, _ZonaVirtualPaymentSettings.ID_Tienda, _ZonaVirtualPaymentSettings.ID_Clave, ref respuesta, ref error, ref errorStr);
+                if (respuesta.Length > 0)
                 {
-                    var unitPriceExclTax = item.UnitPriceExclTax;
-                    var priceExclTax = item.PriceExclTax;
-                    //round
-                    var unitPriceExclTaxRounded = Math.Round(unitPriceExclTax, 2);              
-                    x++;
-                    cartTotal += priceExclTax;
-                    
-                }
-
-                //the checkout attributes that have a dollar value and send them to Paypal as items to be paid for
-                var caValues = _checkoutAttributeParser.ParseCheckoutAttributeValues(postProcessPaymentRequest.Order.CheckoutAttributesXml);
-                foreach (var val in caValues)
-                {
-                    var attPrice = _taxService.GetCheckoutAttributePrice(val, false, postProcessPaymentRequest.Order.Customer);
-                    //round
-                    var attPriceRounded = Math.Round(attPrice, 2);
-                    if (attPrice > decimal.Zero) //if it has a price
+                    if (respuesta[0].int_estado_pago == 888)
                     {
-                        var ca = val.CheckoutAttribute;
-                        if (ca != null)
-                        {
-                            var attName = ca.Name; //set the name
-                   
-                            x++;
-                            cartTotal += attPrice;
-                        }
+                        res = 888;
+                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
+                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
+
                     }
+
+                    else if (respuesta[0].int_estado_pago == 999)
+                    {
+                        res = 999;
+                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Pending;
+                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Pending;
+
+                    }
+
+                    else if (respuesta[0].int_estado_pago == 1)
+                    {
+                        res = 1;
+                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Complete;
+                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Authorized;
+
+
+                    }
+                    else
+                    {
+                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
+                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
+
+                    }
+
                 }
-
-                //order totals
-
-                //shipping
-                var orderShippingExclTax = postProcessPaymentRequest.Order.OrderShippingExclTax;
-                var orderShippingExclTaxRounded = Math.Round(orderShippingExclTax, 2);
-                if (orderShippingExclTax > decimal.Zero)
-                {            
-                    x++;
-                    cartTotal += orderShippingExclTax;
-                }
-
-                //payment method additional fee
-                var paymentMethodAdditionalFeeExclTax = postProcessPaymentRequest.Order.PaymentMethodAdditionalFeeExclTax;
-                var paymentMethodAdditionalFeeExclTaxRounded = Math.Round(paymentMethodAdditionalFeeExclTax, 2);
-                if (paymentMethodAdditionalFeeExclTax > decimal.Zero)
-                {               
-                    x++;
-                    cartTotal += paymentMethodAdditionalFeeExclTax;
-                }
-
-                //tax
-                var orderTax = postProcessPaymentRequest.Order.OrderTax;
-                var orderTaxRounded = Math.Round(orderTax, 2);
-                if (orderTax > decimal.Zero)
+                else
                 {
-               
-                    cartTotal += orderTax;
-                    x++;
+                    postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
+                    postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
+
                 }
 
-                if (cartTotal > postProcessPaymentRequest.Order.OrderTotal)
-                {
-                    /* Take the difference between what the order total is and what it should be and use that as the "discount".
-                     * The difference equals the amount of the gift card and/or reward points used. 
-                     */
-                    decimal discountTotal = cartTotal - postProcessPaymentRequest.Order.OrderTotal;
-                    discountTotal = Math.Round(discountTotal, 2);
-                 }
-                total_con_iva = cartTotal;
-                valor_iva = postProcessPaymentRequest.Order.OrderTax;
             }
             else
             {
-                //pass order total           
-                var orderTotal = Math.Round(postProcessPaymentRequest.Order.OrderTotal, 2);
-                          
-                total_con_iva = postProcessPaymentRequest.Order.OrderTotal;
-                valor_iva = postProcessPaymentRequest.Order.OrderTax;
-            }
+                ZPagosVerificar.pagos_v3[] respuesta = new ZPagosVerificar.pagos_v3[1];
+                res = Verificar.verificar_pago_v3(Id_pago, _ZonaVirtualPaymentSettings.ID_Tienda, _ZonaVirtualPaymentSettings.ID_Clave, ref respuesta, ref error, ref errorStr);
+                if (respuesta.Length > 0)
+                {
+                    if (respuesta[0].int_estado_pago == 888)
+                    {
+                        res = 888;
+                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
+                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
 
-           
-            Id_pago = postProcessPaymentRequest.Order.Id.ToString();
-           
-            string returnUrl = _webHelper.GetStoreLocation(false) + "Plugins/PaymentZonaVirtual/PDTHandler";//?idOrder="+postProcessPaymentRequest.Order.Id;
-            string cancelReturnUrl = _webHelper.GetStoreLocation(false) + "Plugins/PaymentZonaVirtual/CancelOrder";
-           
-            //Instant Payment Notification (server to server message)
-            if (_ZonaVirtualPaymentSettings.EnableIpn)
-            {
-                string ipnUrl;
-                if (String.IsNullOrWhiteSpace(_ZonaVirtualPaymentSettings.IpnUrl))
-                    ipnUrl = _webHelper.GetStoreLocation(false) + "Plugins/PaymentZonaVirtual/IPNHandler";//?idOrder=" + postProcessPaymentRequest.Order.Id;
+                    }
+
+                    else if (respuesta[0].int_estado_pago == 999)
+                    {
+                        res = 999;
+                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Pending;
+                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Pending;
+
+                    }
+
+                    else if (respuesta[0].int_estado_pago == 1)
+                    {
+                        res = 1;
+                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Complete;
+                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Authorized;
+
+                    }
+                    else
+                    {
+                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
+                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
+
+                    }
+
+
+                }
                 else
-                    ipnUrl = _ZonaVirtualPaymentSettings.IpnUrl;
-                builder.AppendFormat("&notify_url={0}", ipnUrl);
-            }
-            descrip_pago = "Compra en la tienda: " + _ZonaVirtualPaymentSettings.NombreTienda;
-            Txtemail = postProcessPaymentRequest.Order.BillingAddress.Email;
-            Id_cliente = postProcessPaymentRequest.Order.BillingAddress.Id.ToString();
-            nombre_cliente = postProcessPaymentRequest.Order.BillingAddress.FirstName;
-            apellido_cliente = postProcessPaymentRequest.Order.BillingAddress.LastName;
-            telefono_cliente = postProcessPaymentRequest.Order.BillingAddress.PhoneNumber;
+                {
+                    postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
+                    postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
 
-          
-             // Clear Response Method
-             System.Web.HttpContext.Current.Response.Clear();
-             // Struct the main page to send Zona Virtual platform
-             System.Web.HttpContext.Current.Response.Write("<html><head>");
-             System.Web.HttpContext.Current.Response.Write(string.Format("</head><body onload=\"document.{0}.submit()\">", "FormName"));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<form name=\"{0}\" method=\"{1}\" action=\"{2}\" >", "FormName", "POST",GetZonaVirtualUrl() + "?estado_pago=enviar_datos"));
-             txtcampo1 = " - "; // Not defined by customer
-             txtcampo2 = " - ";
-             txtcampo3 = " - ";
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "Id_pago", Id_pago));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "tipo_id_cliente",tipo_id_cliente ));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "Id_cliente", Id_cliente ));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "total_con_iva", (int)total_con_iva));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value={1}>", "valor_iva", (int)valor_iva));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "descrip_pago", descrip_pago ));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "nombre_cliente", nombre_cliente ));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "apellido_cliente", apellido_cliente ));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "Txtemail", Txtemail ));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "telefono_cliente", telefono_cliente));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "txtcampo1", txtcampo1 ));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "txtcampo2", txtcampo2 ));
-             System.Web.HttpContext.Current.Response.Write(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "txtcampo3", txtcampo3 ));
-            
-             System.Web.HttpContext.Current.Response.Write("</form>");
-             System.Web.HttpContext.Current.Response.Write("</body></html>");
-             // Close the struct and will be sended automatically 
-             System.Web.HttpContext.Current.Response.End();
+                }
+            }
+
+            Nop.Core.Domain.Orders.OrderNote note = new Core.Domain.Orders.OrderNote();
+            note.CreatedOnUtc = DateTime.UtcNow;
+            note.DisplayToCustomer = false;
+            note.Note = "ID de pago en Zona Virtual: " + Id_pago;
+            note.OrderId = postProcessPaymentRequest.Order.Id;
+            postProcessPaymentRequest.Order.OrderNotes.Add(note);
+
+            System.Web.HttpContext.Current.Response.Clear();
+            System.Web.HttpContext.Current.Response.Write(string.Format("</head><body onload=\"document.{0}.submit()\">", "FormName"));
+            System.Web.HttpContext.Current.Response.Write(string.Format("<form name=\"{0}\" method=\"{1}\" action=\"{2}\" >", "FormName", "POST", "../orderdetails/" + postProcessPaymentRequest.Order.Id.ToString()));
+            System.Web.HttpContext.Current.Response.Write("</form>");
+            System.Web.HttpContext.Current.Response.Write("</body></html>");
+            System.Web.HttpContext.Current.Response.End();
+
         }
-       
+        public void WebPostRequest(string url)
+		{
+			theRequest = WebRequest.Create(url);
+			theRequest.Method = "POST";
+			theQueryData = new ArrayList();
+		}
+
+		public void Add(string key, string value)
+		{
+			theQueryData.Add(String.Format("{0}={1}",key,HttpUtility.UrlEncode(value)));
+		}
+
+		public string GetResponse()
+		{
+			// Set the encoding type
+			theRequest.ContentType="application/x-www-form-urlencoded";
+
+			// Build a string containing all the parameters
+			string Parameters = String.Join("&",(String[]) theQueryData.ToArray(typeof(string)));
+			theRequest.ContentLength = Parameters.Length;
+
+			// We write the parameters into the request
+			StreamWriter sw = new StreamWriter(theRequest.GetRequestStream());
+  			sw.Write(Parameters);
+  			sw.Close();
+
+			// Execute the query
+			theResponse =  (HttpWebResponse)theRequest.GetResponse();
+  			StreamReader sr = new StreamReader(theResponse.GetResponseStream());
+   			return sr.ReadToEnd();
+		}
 
         /// <summary>
         /// Gets additional handling fee
@@ -475,6 +466,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             };
             _settingService.SaveSetting(settings);
 
+           
             //locales
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.StoreName", "Store Name");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.StoreName.Hint", "The name of the Store for Zona Virtual");
@@ -484,14 +476,42 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDStore.Hint", "Unique ID");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey", "WebService Password");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey.Hint", "Password provided for Zona Virtual");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Front.Message", "Zona Virtual Payment Method redirect you buy to www.zonavirual.com to complete the process");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ServiceCode", "Service Code");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ServiceCode.Hint", "Service Code provided for Zona Virtual");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Front.Message", "Thanks for shopping with Zona Virtual");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.ZonaVirtual.Front.TitleDialog", "Payment process in Zona Virtual");
             base.Install();
         }
+        
         
         public override void Uninstall()
         {
             //settings
             _settingService.DeleteSetting<ZonaVirtualPaymentSettings>();
+
+            //locales
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.RedirectionTip");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.UseSandbox");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.UseSandbox.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.BusinessEmail");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.BusinessEmail.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTToken");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTToken.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTValidateOrderTotal");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PDTValidateOrderTotal.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFee");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFee.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFeePercentage");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.AdditionalFeePercentage.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PassProductNamesAndTotals");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.PassProductNamesAndTotals.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.EnableIpn");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.EnableIpn.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.EnableIpn.Hint2");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IpnUrl");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IpnUrl.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ReturnFromPayPalWithoutPaymentRedirectsToOrderDetailsPage");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ReturnFromPayPalWithoutPaymentRedirectsToOrderDetailsPage.Hint");
 
             //locales
             this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.StoreName");
@@ -502,8 +522,12 @@ namespace Nop.Plugin.Payments.ZonaVirtual
             this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDStore.Hint");
             this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey");
             this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.IDKey.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ServiceCode");
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Fields.ServiceCode.Hint");
             this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Front.Message");
-              base.Uninstall();
+            this.DeletePluginLocaleResource("Plugins.Payments.ZonaVirtual.Front.TitleDialog");
+            
+            base.Uninstall();
         }
 
         #endregion

@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Nop.Plugin.Payments.ZonaVirtual.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Nop_Plugin_Payments_ZonaVirtual_ZPagosVerificar_Service" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://www.zonapagos.com/ws_verificar_pagos/Service.asmx</Value>
+    </Setting>
+    <Setting Name="Nop_Plugin_Payments_ZonaVirtual_ZPagos_ZPagos" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://www.zonapagos.com/ws_inicio_pagov2/Zpagos.asmx</Value>
+    </Setting>
+    <Setting Name="Nop_Plugin_Payments_ZonaVirtual_ZPagosDemo_ZPagos" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://www.zonapagosdemo.com/ws_inicio_pagov2/Zpagos.asmx</Value>
+    </Setting>
+    <Setting Name="Nop_Plugin_Payments_ZonaVirtual_ZPagosVerificarDemo_Service" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://www.zonapagosdemo.com/ws_verificar_pagos/Service.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

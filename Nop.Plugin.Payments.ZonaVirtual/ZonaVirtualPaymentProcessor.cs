@@ -184,121 +184,132 @@ namespace Nop.Plugin.Payments.ZonaVirtual
         public void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
         {
             // Datos necesarios para Zona Virtual
+            ProcessPaymentRequest test = new ProcessPaymentRequest();
 
-            string Id_pago = HttpContext.Current.Session["order_id_temp"].ToString();
+            ZPagos.ZPagos Pagos = new ZPagos.ZPagos();
+            ZPagosDemo.ZPagos PagosDemo = new ZPagosDemo.ZPagos();
 
-            ZPagosVerificar.Service Verificar = new ZPagosVerificar.Service();
-            var VerificarDemo = new ZPagosVerificarDemo.Service();
 
-            int error = 0;
-            string errorStr = "";
-            int res = -1;
+            string[] lista_codigos = new string[1] { "" };
+            string[] lista_nit_codigos = new string[1] { "" };
+
+            double[] lista_codigos_servicio_multicredito = new double[1] { 0 };
+            double[] lista_valores_con_iva = new double[1] { 0 };
+            double[] lista_valores_iva = new double[1] { 0 };
+            string Respuesta = "";
+            //string Tienda = postProcessPaymentRequest.Order. _storeContext.CurrentStore.Name;
+            // var form = this.Request.Form;
+            //var order = _orderService.GetOrderByGuid(test.OrderGuid);
+            // Respuesta = _workContext.CurrentCustomer.BillingAddress.FirstName.ToString();
+            var order_id_temp = this.GenerateUniquePayementFromZP(new Random().Next(1, int.MaxValue)); //new Random().Next(1, int.MaxValue);
+
+            //var askOrder = this.aksOrder();
+
+            HttpContext.Current.Session.Add("payment_id", order_id_temp);
+            HttpContext.Current.Session.Add("order_id", postProcessPaymentRequest.Order.Id.ToString());
+            double Total_con_iva = 0;
+            foreach (var item in postProcessPaymentRequest.Order.OrderItems)
+            {
+                Total_con_iva += (double)item.Product.Price * item.Quantity;
+                //Respuesta += " " + item.Product.Price + " " + _workContext.CurrentCustomer.BillingAddress.FirstName.ToString() + _workContext.CurrentCustomer.BillingAddress.LastName;
+            }; // order.BillingAddress.Email;
+
             if (_ZonaVirtualPaymentSettings.RutaTienda.IndexOf("demo") > 0)
             {
-                ZPagosVerificarDemo.pagos_v3[] respuesta = new ZPagosVerificarDemo.pagos_v3[1];
-                res = VerificarDemo.verificar_pago_v3(Id_pago, _ZonaVirtualPaymentSettings.ID_Tienda, _ZonaVirtualPaymentSettings.ID_Clave, ref respuesta, ref error, ref errorStr);
-                if (respuesta.Length > 0)
-                {
-                    if (respuesta[0].int_estado_pago == 888)
-                    {
-                        res = 888;
-                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
-                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
+                Respuesta = PagosDemo.inicio_pagoV2(_ZonaVirtualPaymentSettings.ID_Tienda,
+                _ZonaVirtualPaymentSettings.ID_Clave,
+                Total_con_iva,
+                0,
+                order_id_temp.ToString(),
+                "Compra en tienda: " + _ZonaVirtualPaymentSettings.NombreTienda,
+                postProcessPaymentRequest.Order.Customer.Email,
+                postProcessPaymentRequest.Order.Customer.Id.ToString(),
+                "0",
+                postProcessPaymentRequest.Order.Customer.BillingAddress.FirstName,
+                postProcessPaymentRequest.Order.Customer.BillingAddress.LastName,
+                postProcessPaymentRequest.Order.Customer.BillingAddress.PhoneNumber,
+                "Orden ID: " + postProcessPaymentRequest.Order.Id.ToString(),
+                "_",
+                "_",
+                _ZonaVirtualPaymentSettings.CodigoServicio.ToString(),
+                null, null, null, null, 0);
 
-                    }
-
-                    else if (respuesta[0].int_estado_pago == 999)
-                    {
-                        res = 999;
-                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Pending;
-                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Pending;
-
-                    }
-
-                    else if (respuesta[0].int_estado_pago == 1)
-                    {
-                        res = 1;
-                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Complete;
-                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Authorized;
-
-
-                    }
-                    else
-                    {
-                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
-                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
-
-                    }
-
-                }
-                else
-                {
-                    postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
-                    postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
-
-                }
 
             }
             else
             {
-                ZPagosVerificar.pagos_v3[] respuesta = new ZPagosVerificar.pagos_v3[1];
-                res = Verificar.verificar_pago_v3(Id_pago, _ZonaVirtualPaymentSettings.ID_Tienda, _ZonaVirtualPaymentSettings.ID_Clave, ref respuesta, ref error, ref errorStr);
-                if (respuesta.Length > 0)
-                {
-                    if (respuesta[0].int_estado_pago == 888)
-                    {
-                        res = 888;
-                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
-                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
+                Respuesta = Pagos.inicio_pagoV2(_ZonaVirtualPaymentSettings.ID_Tienda,
+                     _ZonaVirtualPaymentSettings.ID_Clave,
+                Total_con_iva,
+                0,
+                 order_id_temp.ToString(),
+                "Compra en tienda: " + _ZonaVirtualPaymentSettings.NombreTienda,
+                postProcessPaymentRequest.Order.Customer.Email,
+                postProcessPaymentRequest.Order.Customer.Id.ToString(),
+                "0",
+                postProcessPaymentRequest.Order.Customer.BillingAddress.FirstName,
+                postProcessPaymentRequest.Order.Customer.BillingAddress.LastName,
+                postProcessPaymentRequest.Order.Customer.BillingAddress.PhoneNumber,
+                "Orden ID: " + postProcessPaymentRequest.Order.Id.ToString(),
+                "_",
+                "_",
+                _ZonaVirtualPaymentSettings.CodigoServicio.ToString(),
+                null, null, null, null, 0);
 
-                    }
-
-                    else if (respuesta[0].int_estado_pago == 999)
-                    {
-                        res = 999;
-                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Pending;
-                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Pending;
-
-                    }
-
-                    else if (respuesta[0].int_estado_pago == 1)
-                    {
-                        res = 1;
-                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Complete;
-                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Authorized;
-
-                    }
-                    else
-                    {
-                        postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
-                        postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
-
-                    }
-
-
-                }
-                else
-                {
-                    postProcessPaymentRequest.Order.OrderStatus = OrderStatus.Cancelled;
-                    postProcessPaymentRequest.Order.PaymentStatus = PaymentStatus.Refunded;
-
-                }
             }
 
-            Nop.Core.Domain.Orders.OrderNote note = new Core.Domain.Orders.OrderNote();
-            note.CreatedOnUtc = DateTime.UtcNow;
-            note.DisplayToCustomer = false;
-            note.Note = "ID de pago en Zona Virtual: " + Id_pago;
-            note.OrderId = postProcessPaymentRequest.Order.Id;
-            postProcessPaymentRequest.Order.OrderNotes.Add(note);
+            string URL = _ZonaVirtualPaymentSettings.RutaTienda + "?estado_pago=iniciar_pago&identificador=" + Respuesta;
+
 
             System.Web.HttpContext.Current.Response.Clear();
             System.Web.HttpContext.Current.Response.Write(string.Format("</head><body onload=\"document.{0}.submit()\">", "FormName"));
-            System.Web.HttpContext.Current.Response.Write(string.Format("<form name=\"{0}\" method=\"{1}\" action=\"{2}\" >", "FormName", "POST", "../orderdetails/" + postProcessPaymentRequest.Order.Id.ToString()));
+            System.Web.HttpContext.Current.Response.Write(string.Format("<form name=\"{0}\" method=\"{1}\" action=\"{2}\" >", "FormName", "POST", URL));
             System.Web.HttpContext.Current.Response.Write("</form>");
             System.Web.HttpContext.Current.Response.Write("</body></html>");
             System.Web.HttpContext.Current.Response.End();
+           
 
+        }
+
+        /// <summary>
+        /// Consulta si existe una orden con ese id si es asi busca de manera recursiva hasta encontrar un valor disponible
+        /// </summary>
+        /// <param name="idOrder"></param>
+        /// <returns></returns>
+        private int GenerateUniquePayementFromZP(int RandomIndex)
+        {
+
+
+            if (_ZonaVirtualPaymentSettings.RutaTienda.IndexOf("demo") > 0)
+            {
+
+                var VerificarDemo = new ZPagosVerificarDemo.Service();
+                ZPagosVerificarDemo.pagos_v3[] respuesta = new ZPagosVerificarDemo.pagos_v3[1];
+                int error = 0;
+                string errorStr = "";
+                var res = VerificarDemo.verificar_pago_v3(RandomIndex.ToString(), _ZonaVirtualPaymentSettings.ID_Tienda, _ZonaVirtualPaymentSettings.ID_Clave, ref respuesta, ref error, ref errorStr);
+                if (res != 0)
+                {
+
+                    return this.GenerateUniquePayementFromZP(new Random().Next(1, int.MaxValue));
+
+                }
+            }
+            else
+            {
+                var Verificar = new ZPagosVerificar.Service();
+                ZPagosVerificar.pagos_v3[] respuesta = new ZPagosVerificar.pagos_v3[1];
+                int error = 0;
+                string errorStr = "";
+                var res = Verificar.verificar_pago_v3(RandomIndex.ToString(), _ZonaVirtualPaymentSettings.ID_Tienda, _ZonaVirtualPaymentSettings.ID_Clave, ref respuesta, ref error, ref errorStr);
+                if (res != 0)
+                {
+
+                    return this.GenerateUniquePayementFromZP(new Random().Next(1, int.MaxValue));
+
+                }
+            }
+            return RandomIndex;
         }
         public void WebPostRequest(string url)
 		{

@@ -116,7 +116,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual.Controllers
         [ChildActionOnly]
         public ActionResult PaymentInfo()
         {
-            ProcessPaymentRequest test = new ProcessPaymentRequest();
+          /*  ProcessPaymentRequest test = new ProcessPaymentRequest();
 
             ZPagos.ZPagos Pagos = new ZPagos.ZPagos();
             ZPagosDemo.ZPagos PagosDemo = new ZPagosDemo.ZPagos();
@@ -208,7 +208,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual.Controllers
             // var descrip_pago = "Compra en la tienda: " + _ZonaVirtualPaymentSettings.NombreTienda;
 
             Session.Add("code_buy", Respuesta);
-
+            */
             return View("Nop.Plugin.Payments.ZonaVirtual.Views.PaymentZonaVirtual.PaymentInfo");
         }
 
@@ -271,6 +271,188 @@ namespace Nop.Plugin.Payments.ZonaVirtual.Controllers
                 }
             }
             return RandomIndex;
+        }
+
+        [ValidateInput(false)]
+        [AllowAnonymous]       
+        public ActionResult CompletePayment()
+        {
+            // Se debe recibir la informacion de la compra mediante post 
+            // Consultar la compra por id de session
+            // verificar el estado y redireccionar al id de compra
+            string Id_pago = "";// Session["payment_id"].ToString();
+            string Id_orden = "";// Session["order_id"].ToString();
+            try
+            {
+                Id_pago = Session["payment_id"].ToString();
+                Id_orden = Session["order_id"].ToString();
+
+            }
+            catch
+            {
+
+                Id_pago = Request.QueryString["id_pago"]; // form["id_pago"].ToString();
+                Id_orden = Request.QueryString["campo1"].ToString().Replace("Orden ID: ", "");
+            }
+            var processor = _paymentService.LoadPaymentMethodBySystemName("Payments.ZonaVirtual") as ZonaVirtualPaymentProcessor;
+            if (processor == null ||
+                !processor.IsPaymentMethodActive(_paymentSettings) || !processor.PluginDescriptor.Installed)
+                throw new NopException("Zona Virtual module cannot be loaded");
+
+            Order order = _orderService.GetOrderById(int.Parse(Id_orden));
+            ZPagosVerificar.Service Verificar = new ZPagosVerificar.Service();
+            var VerificarDemo = new ZPagosVerificarDemo.Service();
+
+
+
+            int error = 0;
+            string errorStr = "";
+            int res = -1;
+
+            // Verificar pago
+            if (_ZonaVirtualPaymentSettings.RutaTienda.IndexOf("demo") > 0)
+            {
+                ZPagosVerificarDemo.pagos_v3[] respuesta = new ZPagosVerificarDemo.pagos_v3[1];
+                res = VerificarDemo.verificar_pago_v3(Id_pago, _ZonaVirtualPaymentSettings.ID_Tienda, _ZonaVirtualPaymentSettings.ID_Clave, ref respuesta, ref error, ref errorStr);
+                if (respuesta.Length > 0)
+                {
+                    if (respuesta[0].int_estado_pago == 888)
+                    {
+                        res = 888;
+                        order.OrderStatus = OrderStatus.Cancelled;
+                        order.PaymentStatus = PaymentStatus.Refunded;
+
+                    }
+
+                    else if (respuesta[0].int_estado_pago == 999)
+                    {
+                        res = 999;
+                        order.OrderStatus = OrderStatus.Pending;
+                        order.PaymentStatus = PaymentStatus.Pending;
+
+                    }
+
+                    else if (respuesta[0].int_estado_pago == 1)
+                    {
+                        res = 1;
+                        order.OrderStatus = OrderStatus.Complete;
+                        order.PaymentStatus = PaymentStatus.Authorized;
+                        //mark order as paid
+                        if (_orderProcessingService.CanMarkOrderAsPaid(order))
+                        {
+                            order.AuthorizationTransactionId = Id_pago;
+                            _orderService.UpdateOrder(order);
+
+                            _orderProcessingService.MarkOrderAsPaid(order);
+                        }
+
+                    }
+                    else
+                    {
+                        order.OrderStatus = OrderStatus.Cancelled;
+                        order.PaymentStatus = PaymentStatus.Refunded;
+
+                    }
+
+                }
+                else
+                {
+                    order.OrderStatus = OrderStatus.Cancelled;
+                    order.PaymentStatus = PaymentStatus.Refunded;
+
+                }
+
+            }
+            else
+            {
+                ZPagosVerificar.pagos_v3[] respuesta = new ZPagosVerificar.pagos_v3[1];
+                res = Verificar.verificar_pago_v3(Id_pago, _ZonaVirtualPaymentSettings.ID_Tienda, _ZonaVirtualPaymentSettings.ID_Clave, ref respuesta, ref error, ref errorStr);
+                if (respuesta.Length > 0)
+                {
+                    if (respuesta[0].int_estado_pago == 888)
+                    {
+                        res = 888;
+                        order.OrderStatus = OrderStatus.Cancelled;
+                        order.PaymentStatus = PaymentStatus.Refunded;
+
+                    }
+
+                    else if (respuesta[0].int_estado_pago == 999)
+                    {
+                        res = 999;
+                        order.OrderStatus = OrderStatus.Pending;
+                        order.PaymentStatus = PaymentStatus.Pending;
+
+                    }
+
+                    else if (respuesta[0].int_estado_pago == 1)
+                    {
+                        res = 1;
+                        order.OrderStatus = OrderStatus.Complete;
+                        order.PaymentStatus = PaymentStatus.Authorized;
+                        //mark order as paid
+                        if (_orderProcessingService.CanMarkOrderAsPaid(order))
+                        {
+                            order.AuthorizationTransactionId = Id_pago;
+                            _orderService.UpdateOrder(order);
+
+                            _orderProcessingService.MarkOrderAsPaid(order);
+                        }
+
+                    }
+                    else
+                    {
+                        order.OrderStatus = OrderStatus.Cancelled;
+                        order.PaymentStatus = PaymentStatus.Refunded;
+
+                    }
+
+
+                }
+                else
+                {
+                    order.OrderStatus = OrderStatus.Cancelled;
+                    order.PaymentStatus = PaymentStatus.Refunded;
+
+                }
+            }
+
+            // Añadir nota del pago en zona virtual
+            order.OrderNotes.Add(new OrderNote()
+            {
+                Note = "ID de pago en Zona Virtual: " + Id_pago,
+                DisplayToCustomer = false,
+                CreatedOnUtc = DateTime.UtcNow
+            });
+            _orderService.UpdateOrder(order);
+            string llaves = "";
+            /*foreach (var i in form.AllKeys.ToList())
+            {
+                llaves += i.ToString() + " - ";
+            }*/
+
+            //return RedirectToRoute("CheckoutCompleted", new { orderId = order.Id });
+            try
+            {
+                Id_pago = Session["payment_id"].ToString();
+                Id_orden = Session["order_id"].ToString();
+                return RedirectToRoute("CheckoutCompleted", new { orderId = order.Id });
+
+            }
+            catch
+            {
+                Id_pago = Request.QueryString["id_pago"]; // form["id_pago"].ToString();
+                Id_orden = Request.QueryString["campo1"]; 
+                return RedirectToAction("Index", "Home", new { orderID = llaves });
+            }
+          
+            /*
+            System.Web.HttpContext.Current.Response.Clear();
+            System.Web.HttpContext.Current.Response.Write(string.Format("</head><body onload=\"document.{0}.submit()\">", "FormName"));
+            System.Web.HttpContext.Current.Response.Write(string.Format("<form name=\"{0}\" method=\"{1}\" action=\"{2}\" >", "FormName", "POST", "../orderdetails/" + postProcessPaymentRequest.Order.Id.ToString()));
+            System.Web.HttpContext.Current.Response.Write("</form>");
+            System.Web.HttpContext.Current.Response.Write("</body></html>");
+            System.Web.HttpContext.Current.Response.End();*/
         }
 
         [NonAction]

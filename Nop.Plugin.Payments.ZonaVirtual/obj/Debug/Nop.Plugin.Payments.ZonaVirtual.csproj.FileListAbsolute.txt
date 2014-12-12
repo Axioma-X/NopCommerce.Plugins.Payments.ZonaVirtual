@@ -29,3 +29,11 @@ D:\Clientes\Juan Lara\Fruta Fresca\Nop en blanco\Presentation\Nop.Web\Plugins\Pa
 D:\Clientes\Juan Lara\Fruta Fresca\Nop en blanco\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.pdb
 D:\Clientes\Juan Lara\Fruta Fresca\Nop en blanco\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Debug\Nop.Plugin.Payments.ZonaVirtual.dll
 D:\Clientes\Juan Lara\Fruta Fresca\Nop en blanco\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Debug\Nop.Plugin.Payments.ZonaVirtual.pdb
+D:\Clientes\Juan Lara\Fruta Fresca\Componentes\IT7\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Description.txt
+D:\Clientes\Juan Lara\Fruta Fresca\Componentes\IT7\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\logo.jpg
+D:\Clientes\Juan Lara\Fruta Fresca\Componentes\IT7\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.dll.config
+D:\Clientes\Juan Lara\Fruta Fresca\Componentes\IT7\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.dll
+D:\Clientes\Juan Lara\Fruta Fresca\Componentes\IT7\Presentation\Nop.Web\Plugins\Payments.ZonaVirtual\Nop.Plugin.Payments.ZonaVirtual.pdb
+D:\Clientes\Juan Lara\Fruta Fresca\Componentes\IT7\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Debug\Nop.Plugin.Payments.ZonaVirtual.csprojResolveAssemblyReference.cache
+D:\Clientes\Juan Lara\Fruta Fresca\Componentes\IT7\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Debug\Nop.Plugin.Payments.ZonaVirtual.dll
+D:\Clientes\Juan Lara\Fruta Fresca\Componentes\IT7\Plugins\Nop.Plugin.Payments.ZonaVirtual\obj\Debug\Nop.Plugin.Payments.ZonaVirtual.pdb

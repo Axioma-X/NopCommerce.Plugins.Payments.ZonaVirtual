@@ -5,6 +5,7 @@ Plugin para **nopComerce 3.30** disponible para escoger como metodo de pago de l
 ## VERSIONES ##
 1.0 Versión inicial
 1.1 Versión con manejo de iframe para el Pago
+1.1 Versión con manejo Descuentos y ajustes al precion por el metodo de envío
 
 
 ## IMPORTANTE ##

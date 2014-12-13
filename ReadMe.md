@@ -4,8 +4,10 @@ Plugin para **nopComerce 3.30** disponible para escoger como metodo de pago de l
 
 ## VERSIONES ##
 1.0 Versión inicial
+
 1.1 Versión con manejo de iframe para el Pago
-1.1 Versión con manejo Descuentos y ajustes al precion por el metodo de envío
+
+1.2 Versión con manejo Descuentos y ajustes al precion por el metodo de envío
 
 
 ## IMPORTANTE ##
@@ -26,4 +28,4 @@ Consiste en usar como metodo de pago los servicios provistos por Zona Virtual, r
 
 1. No almacena información de tarjetas de credito o Débito.
 2. Transporte vía Get y Post de la información.
-3. Se realiza un redirect a la pagina de Zona Virtual para efectuar el pago, la cual regresa a la tienda para confirmar la compra. 
+3. Se realiza un redirect a la pagina de Zona Virtual para efectuar el pago, la cual regresa a la tienda para confirmar la compra.

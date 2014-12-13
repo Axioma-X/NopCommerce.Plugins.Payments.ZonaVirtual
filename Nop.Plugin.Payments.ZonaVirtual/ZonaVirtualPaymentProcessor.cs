@@ -213,7 +213,7 @@ namespace Nop.Plugin.Payments.ZonaVirtual
                 Total_con_iva += (double)item.Product.Price * item.Quantity;
                 //Respuesta += " " + item.Product.Price + " " + _workContext.CurrentCustomer.BillingAddress.FirstName.ToString() + _workContext.CurrentCustomer.BillingAddress.LastName;
             }; // order.BillingAddress.Email;
-
+            Total_con_iva = Double.Parse(postProcessPaymentRequest.Order.OrderTotal.ToString());
             if (_ZonaVirtualPaymentSettings.RutaTienda.IndexOf("demo") > 0)
             {
                 Respuesta = PagosDemo.inicio_pagoV2(_ZonaVirtualPaymentSettings.ID_Tienda,
